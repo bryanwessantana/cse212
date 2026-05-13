@@ -4,6 +4,33 @@
 /// </summary>
 public class CustomerService {
     public static void Run() {
+        // Test 1
+        // Scenario: Create a customer service queue with a maximum size of 2. Try to add 3 customers.
+        // Expected Result: The system should display an error message when trying to add the 3rd customer.
+        Console.WriteLine("Test 1: Full Queue Error");
+        var cs1 = new CustomerService(2);
+        cs1.AddNewCustomer(); // Add a customer
+        cs1.AddNewCustomer(); // Add another customer
+        cs1.AddNewCustomer(); // This should print "Maximum Number of Customers in Queue."
+        Console.WriteLine(cs1);
+        Console.WriteLine("=================");
+
+        // Test 2
+        // Scenario: Try to serve a customer when the queue is empty.
+        // Expected Result: Should display an error message indicating no customers to serve.
+        Console.WriteLine("Test 2: Empty Queue Error");
+        var cs2 = new CustomerService(10);
+        cs2.ServeCustomer(); // Should print "No customers in the queue to serve."
+        Console.WriteLine("=================");
+
+        // Test 3
+        // Scenario: Validate that the default size (10) is applied if the user passes an invalid value (0 or negative).
+        // Expected Result: The max_size should be 10.
+        Console.WriteLine("Test 3: Invalid Default Size");
+        var cs3 = new CustomerService(0);
+        Console.WriteLine(cs3); // Should show max_size=10
+        Console.WriteLine("=================");
+        
         // Example code to see what's in the customer service queue:
         // var cs = new CustomerService(10);
         // Console.WriteLine(cs);
@@ -66,8 +93,8 @@ public class CustomerService {
     /// new record into the queue.
     /// </summary>
     private void AddNewCustomer() {
-        // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        // BUG 1 FIXED: Use >= so it doesn't allow more than the max number of customers in the queue
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -79,7 +106,6 @@ public class CustomerService {
         Console.Write("Problem: ");
         var problem = Console.ReadLine()!.Trim();
 
-        // Create the customer object and add it to the queue
         var customer = new Customer(name, accountId, problem);
         _queue.Add(customer);
     }
@@ -88,8 +114,15 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
+        // BUG 3 FIXED: Check if the queue is empty before trying to serve a customer
+        if (_queue.Count == 0) {
+            Console.WriteLine("No customers in the queue to serve.");
+            return;
+        }
+
+        // BUG 2 FIXED: Read the first customer in the queue and remove it from the queue
         var customer = _queue[0];
+        _queue.RemoveAt(0);
         Console.WriteLine(customer);
     }
 
