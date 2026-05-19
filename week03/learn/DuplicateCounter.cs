@@ -1,6 +1,9 @@
-﻿public class DuplicateCounter
+﻿using System;
+using System.Collections.Generic;
+
+public class DuplicateCounter
 {
-    //Count how many duplicates are in a collection of data.
+    // Count how many duplicates are in a collection of data.
 
     public static void Run()
     {
@@ -22,9 +25,24 @@
         Console.WriteLine($"Number of duplicates : {CountDuplicates(data)}");
     }
 
-    private static int CountDuplicates(int[] data)
+    // Changed the method signature to accept an IEnumerable<int> instead of an array, which allows for more flexibility in 
+    // the types of collections that can be passed in.
+    public static int CountDuplicates(IEnumerable<int> numbers)
     {
-        // Add code here.
-        return 0;
+        // Created a HashSet to keep track of seen numbers. HashSet is a collection that contains no duplicate elements.
+        HashSet<int> seenNumbers = new HashSet<int>();
+        int duplicateCount = 0;
+
+        foreach (var number in numbers)
+        {
+            // The method Add returns true if the number was added to the set, and false if it was already present.
+            if (!seenNumbers.Add(number))
+            {
+                // If the number was already present, it means it's a duplicate, so we increment the duplicate count.
+                duplicateCount++;
+            }
+        }
+
+        return duplicateCount;
     }
 }

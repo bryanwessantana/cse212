@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 public class Translator
 {
     public static void Run()
@@ -24,7 +27,8 @@ public class Translator
     /// <returns>fixed array of divisors</returns>
     public void AddWord(string fromWord, string toWord)
     {
-        // ADD YOUR CODE HERE
+        // Adds a word to the dictionary, if the word already exists, it will be overwritten with the new translation
+        _words[fromWord] = toWord;
     }
 
     /// <summary>
@@ -34,7 +38,13 @@ public class Translator
     /// <returns>The translated word or "???" if no translation is available</returns>
     public string Translate(string fromWord)
     {
-        // ADD YOUR CODE HERE
-        return "";
+        // Verify if the translation exists in the dictionary
+        if (_words.ContainsKey(fromWord))
+        {
+            return _words[fromWord];
+        }
+
+        // If the translation does not exist, return "???"
+        return "???";
     }
 }

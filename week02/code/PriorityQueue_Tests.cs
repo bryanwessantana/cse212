@@ -1,6 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-// TODO Problem 2 - Write and run test cases and fix the code to match requirements.
+using System; // Necessary for InvalidOperationException
 
 [TestClass]
 public class PriorityQueueTests
@@ -33,5 +32,22 @@ public class PriorityQueueTests
 
         Assert.AreEqual("A", pq.Dequeue());
         Assert.AreEqual("B", pq.Dequeue());
+    }
+
+    [TestMethod]
+    // Scenario: Attempt to dequeue from an empty priority queue.
+    // Expected Result: Should throw an InvalidOperationException with the message "The queue is empty."
+    public void TestPriorityQueue_Empty()
+    {
+        var pq = new PriorityQueue();
+
+        // Used Assert.ThrowsException to check if the correct exception is thrown when trying to dequeue from an empty queue
+        var exception = Assert.ThrowsException<InvalidOperationException>(() =>
+        {
+            pq.Dequeue();
+        });
+
+        // Verified that the exception message is correct
+        Assert.AreEqual("The queue is empty.", exception.Message);
     }
 }

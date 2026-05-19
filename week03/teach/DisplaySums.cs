@@ -1,4 +1,7 @@
-﻿public static class DisplaySums {
+﻿using System;
+using System.Collections.Generic;
+
+public static class DisplaySums {
     public static void Run() {
         DisplaySumPairs([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
         // Should show something like (order does not matter):
@@ -28,6 +31,19 @@
     /// </summary>
     /// <param name="numbers">array of integers</param>
     private static void DisplaySumPairs(int[] numbers) {
-        // TODO Problem 2 - This should print pairs of numbers in the given array
+        // Created a set to keep track of numbers we've seen so far
+        HashSet<int> seenNumbers = new HashSet<int>();
+
+        foreach (var number in numbers) {
+            int target = 10 - number;
+
+            // If the partner that sums to 10 has already been seen, we found a pair!
+            if (seenNumbers.Contains(target)) {
+                Console.WriteLine($"{number} {target}");
+            }
+
+            // Add the current number to the set for future checks
+            seenNumbers.Add(number);
+        }
     }
 }

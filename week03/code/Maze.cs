@@ -25,41 +25,64 @@ public class Maze
         _mazeMap = mazeMap;
     }
 
-    // TODO Problem 4 - ADD YOUR CODE HERE
-    /// <summary>
-    /// Check to see if you can move left.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
     public void MoveLeft()
     {
-        // FILL IN CODE
+        var currentCoordinates = (_currX, _currY);
+        
+        // Verify if the movement to the left (index 0) is valid
+        if (_mazeMap.ContainsKey(currentCoordinates) && _mazeMap[currentCoordinates][0])
+        {
+            _currX -= 1; // Move left by decrementing X
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move right.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
     public void MoveRight()
     {
-        // FILL IN CODE
+        var currentCoordinates = (_currX, _currY);
+
+        // Verify if the movement to the right (index 1) is valid
+        if (_mazeMap.ContainsKey(currentCoordinates) && _mazeMap[currentCoordinates][1])
+        {
+            _currX += 1; // Move right by incrementing X
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move up.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
     public void MoveUp()
     {
-        // FILL IN CODE
+        var currentCoordinates = (_currX, _currY);
+
+        // Verify if the movement to the up (index 2) is valid
+        if (_mazeMap.ContainsKey(currentCoordinates) && _mazeMap[currentCoordinates][2])
+        {
+            _currY -= 1; // In many matrix/grid formats, "Up" decrements the Y coordinate.
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
     }
 
-    /// <summary>
-    /// Check to see if you can move down.  If you can, then move.  If you
-    /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
-    /// </summary>
     public void MoveDown()
     {
-        // FILL IN CODE
+        var currentCoordinates = (_currX, _currY);
+
+        // Verify if the movement to the down (index 3) is valid
+        if (_mazeMap.ContainsKey(currentCoordinates) && _mazeMap[currentCoordinates][3])
+        {
+            _currY += 1; // In many matrix/grid formats, "Down" increments the Y coordinate.
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
     }
 
     public string GetStatus()
