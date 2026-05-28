@@ -32,7 +32,23 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void InsertTail(int value)
     {
-        // TODO Problem 1
+        Node newNode = new Node(value);
+
+        // If the list is empty, then point both head and tail to the new node.
+        if (_head == null)
+        {
+            _head = newNode;
+            _tail = newNode;
+        }
+        else
+        {
+            // The previous of the new node becomes the old tail
+            newNode.Prev = _tail;
+            // The next of the old tail becomes the new node
+            _tail!.Next = newNode;
+            // The tail pointer of the list now points to the new node
+            _tail = newNode;
+        }
     }
 
 
@@ -64,7 +80,25 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void RemoveTail()
     {
-        // TODO Problem 2
+        // Case 1: Empty list, do nothing
+        if (_tail == null)
+        {
+            return;
+        }
+
+        // Case 2: List has only one item, set head and tail to null resulting in an empty list
+        if (_head == _tail)
+        {
+            _head = null;
+            _tail = null;
+        }
+        else
+        {
+            // The second-to-last node breaks the link with the current tail (Next becomes null)
+            _tail.Prev!.Next = null;
+            // The tail pointer now points to the second-to-last node
+            _tail = _tail.Prev;
+        }
     }
 
     /// <summary>
@@ -108,7 +142,38 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Remove(int value)
     {
-        // TODO Problem 3
+        Node? current = _head;
+
+        // Loop to find the first node that contains 'value'
+        while (current != null)
+        {
+            if (current.Data == value)
+            {
+                // Case A: The node found is the Head
+                if (current == _head)
+                {
+                    RemoveHead(); // Or we could duplicate the logic here to avoid the function call overhead, but this is cleaner 
+                                  // and more maintainable.
+                }
+                // Case B: The node found is the Tail
+                else if (current == _tail)
+                {
+                    RemoveTail();
+                }
+                // Case C: The node is in the middle of the list
+                else
+                {
+                    current.Prev!.Next = current.Next;
+                    current.Next!.Prev = current.Prev;
+                }
+                
+                // Found and removed, stop the execution to avoid searching for duplicates
+                return;
+            }
+            
+            // Advance to the next node
+            current = current.Next;
+        }
     }
 
     /// <summary>
@@ -116,7 +181,19 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Replace(int oldValue, int newValue)
     {
-        // TODO Problem 4
+        Node? current = _head;
+
+        // Run through the entire list to find all nodes that contain 'oldValue'
+        while (current != null)
+        {
+            if (current.Data == oldValue)
+            {
+                current.Data = newValue;
+            }
+            
+            // Keep searching for 'oldValue' until we reach the end of the list
+            current = current.Next;
+        }
     }
 
     /// <summary>
@@ -144,10 +221,20 @@ public class LinkedList : IEnumerable<int>
     /// <summary>
     /// Iterate backward through the Linked List
     /// </summary>
-    public IEnumerable Reverse()
+    public IEnumerable<int> Reverse()
     {
-        // TODO Problem 5
-        yield return 0; // replace this line with the correct yield return statement(s)
+        // Start at the end since this is a backward iteration.
+        Node? current = _tail;
+
+        // Loop through the list until we reach the beginning (null) by following the Prev pointers
+        while (current != null)
+        {
+            // Provide (yield) each item to the user and pause the iteration state
+            yield return current.Data;
+            
+            // Move backward in memory using the Prev pointer
+            current = current.Prev;
+        }
     }
 
     public override string ToString()
